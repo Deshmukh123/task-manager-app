@@ -4,6 +4,7 @@ FROM python:3.11-slim
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app  
 
 # Set working directory
 WORKDIR /app
@@ -18,8 +19,9 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Install Python dependencies (including pydantic[email])
-RUN pip install "pydantic[email]"  "python-multipart"  --no-cache-dir -r requirements.txt
+RUN pip install "pydantic[email]" "python-multipart" --no-cache-dir -r requirements.txt
 
+# Copy DB reset script
 COPY reset_db.py ./reset_db.py
 
 # Copy the app source code

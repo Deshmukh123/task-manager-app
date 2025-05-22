@@ -2,30 +2,39 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8000/auth';
 
-export const loginUser = async (username, password) => {
-  const params = new URLSearchParams();
-  params.append('username', username);
-  params.append('password', password);
-
-  const response = await axios.post(`${API_URL}/login`, params, {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+export const loginUser = async (form) => {
+  const response = await fetch('http://localhost:8000/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(form),
   });
 
-  if (response.data.access_token) {
-    localStorage.setItem('token', response.data.access_token);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Login failed');
   }
 
-  return response.data;
+  return { data };
 };
 
-export const registerUser = async (username, email, password) => {
-  const response = await axios.post(`${API_URL}/register`, {
-    username,
-    email,
-    password,
+
+export const register = async (form) => {
+  const response = await fetch('http://localhost:8000/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(form),
   });
-  return response.data;
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Registration failed');
+  }
+
+  return { data };
 };
+
 
 export const logoutUser = () => {
   localStorage.removeItem('token');

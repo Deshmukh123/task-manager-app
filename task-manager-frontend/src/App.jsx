@@ -8,15 +8,14 @@ import Navbar from './components/Navbar';
 import './styles/main.css';
 
 const App = () => (
-  <Router>
-    <Navbar />
+  <>
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
-  </Router>
+  </>
 );
 
 export default App;
